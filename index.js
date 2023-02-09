@@ -2,7 +2,10 @@ const Employee = require('./lib/employee');
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
+
 const inquirer = require('inquirer');
+const fs = require('fs');
+const generateHTML = require('./src/template');
 
 const employeeList = [];
 
@@ -150,7 +153,7 @@ function init() {
                     if (additionalAnswer.additionalEmployee === true) {
                         init();
                     } else {
-                        console.log(employeeList);
+                        createWebpage(employeeList);
                         return;
                     }
                 })
@@ -166,7 +169,7 @@ function init() {
                     if (additionalAnswer.additionalEmployee === true) {
                         init();
                     } else {
-                        console.log(employeeList);
+                        createWebpage(employeeList);
                         return;
                     }
                 })
@@ -182,7 +185,7 @@ function init() {
                     if (additionalAnswer.additionalEmployee === true) {
                         init();
                     } else {
-                        console.log(employeeList);
+                        createWebpage(employeeList);
                         return;
                     }
                 })
@@ -195,7 +198,7 @@ function init() {
                 if (additionalAnswer.additionalEmployee === true) {
                     init();
                 } else {
-                    console.log(employeeList);
+                    createWebpage(employeeList);
                     return;
                 }
             })
@@ -204,3 +207,13 @@ function init() {
     
 }
 
+function createWebpage(employees) {
+    let data = generateHTML(employees);
+    fs.writeFile("./dist/test.html", data, (err) => {
+        if(err) {
+            console.error(err)
+        } else {
+            console.log("Successfully created HTML File")
+        }
+    })
+}
