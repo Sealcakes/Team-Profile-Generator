@@ -40,7 +40,7 @@ let employeeQuestions = [
             if (employeeId) {
                 return true;
             } else {
-                console.log("Please enter an employee ID number")
+                console.log("Please enter an employee ID number");
                 return false;
             }
         }
@@ -54,7 +54,7 @@ let employeeQuestions = [
             if (employeeEmail) {
                 return true;
             } else {
-                console.log("Please enter an employee email")
+                console.log("Please enter an employee email");
                 return false;
             }
         }
@@ -66,7 +66,6 @@ let employeeQuestions = [
         name: "employeeChoice",
         choices: [
             'Employee',
-            'Manager',
             'Engineer',
             'Intern'
         ]
@@ -75,6 +74,48 @@ let employeeQuestions = [
 
 let managerQuestions = [
     {
+        type: "input",
+        message: "What is the Team Manager's name?",
+        name: "managerName",
+        validate: managerName => {
+            if(managerName) {
+                return true;
+            } else {
+                console.log("Please enter the Team Manager's name");
+                return false;
+            }
+        }
+    },
+
+    {
+        type: "input",
+        message: "What is the Team Manager's employee ID number?",
+        name: "managerId",
+        validate: managerId => {
+            if(managerId) {
+                return true;
+            } else {
+                console.log("Please enter the Team Manager's employee ID number");
+                return false;
+            }
+        }
+    },
+
+    {
+        type: "input",
+        message: "What is the Team Manager's email?",
+        name: "managerEmail",
+        validate: managerEmail => {
+            if(managerEmail) {
+                return true;
+            } else {
+                console.log("Please enter the Team Manager's Email");
+                return false;
+            }
+        }
+    },
+
+    {
         type: 'number',
         message: "What is the Manager's office number?",
         name: "managerOfficeNumber",
@@ -82,7 +123,7 @@ let managerQuestions = [
             if (managerOfficeNumber) {
                 return true;
             } else {
-                console.log("Please enter a number")
+                console.log("Please enter a number");
                 return false;
             }
         }
@@ -98,7 +139,7 @@ let engineerQuestions = [
             if (githubUsername) {
                 return true;
             } else {
-                console.log("Please enter a GitHub Username")
+                console.log("Please enter a GitHub Username");
                 return false;
             }
         }
@@ -114,7 +155,7 @@ let internQuestions = [
             if (internSchool) {
                 return true;
             } else {
-                console.log("Please enter a school name")
+                console.log("Please enter a school name");
                 return false;
             }
         }
@@ -133,33 +174,33 @@ let additionalEmployee = [
 inquirer.prompt(startProgram)
 .then(function(answers) {
     if(answers.startProgram === true) {
-        init();
+        managerPrompt();
     } else {
         return;
     }
 })
 
-function init() {
+function managerPrompt() {
+    inquirer.prompt(managerQuestions)
+    .then(function(managerAnswers) {
+        const managerObj = new Manager(managerAnswers.managerName, managerAnswers.managerId, managerAnswers.managerEmail, managerAnswers.managerOfficeNumber);
+        employeeList.push(managerObj);
+        inquirer.prompt(additionalEmployee)
+        .then(function(additionalAnswer) {
+            if (additionalAnswer.additionalEmployee === true) {
+                employeePrompt();
+            } else {
+                createWebpage(employeeList);
+                return;
+            }
+        });
+    });
+};
+
+function employeePrompt() {
     inquirer.prompt(employeeQuestions)
     .then(function(answers) {
-        if(answers.employeeChoice === 'Manager') {
-            
-            inquirer.prompt(managerQuestions)
-            .then(function(managerAnswers) {
-                const managerObj = new Manager(answers.employeeName, answers.employeeId, answers.employeeEmail, managerAnswers.managerOfficeNumber);
-                employeeList.push(managerObj);
-                inquirer.prompt(additionalEmployee)
-                .then(function(additionalAnswer) {
-                    if (additionalAnswer.additionalEmployee === true) {
-                        init();
-                    } else {
-                        createWebpage(employeeList);
-                        return;
-                    }
-                })
-            })
-        } else if(answers.employeeChoice === 'Engineer') {
-
+        if(answers.employeeChoice === 'Engineer') {
             inquirer.prompt(engineerQuestions)
             .then(function(engineerAnswers) {
                 const engineerObj = new Engineer(answers.employeeName, answers.employeeId, answers.employeeEmail, engineerAnswers.githubUsername);
@@ -167,7 +208,7 @@ function init() {
                 inquirer.prompt(additionalEmployee)
                 .then(function(additionalAnswer) {
                     if (additionalAnswer.additionalEmployee === true) {
-                        init();
+                        employeePrompt();
                     } else {
                         createWebpage(employeeList);
                         return;
@@ -183,7 +224,7 @@ function init() {
                 inquirer.prompt(additionalEmployee)
                 .then(function(additionalAnswer) {
                     if (additionalAnswer.additionalEmployee === true) {
-                        init();
+                        employeePrompt();
                     } else {
                         createWebpage(employeeList);
                         return;
@@ -196,7 +237,7 @@ function init() {
             inquirer.prompt(additionalEmployee)
             .then(function(additionalAnswer) {
                 if (additionalAnswer.additionalEmployee === true) {
-                    init();
+                    employeePrompt();
                 } else {
                     createWebpage(employeeList);
                     return;
@@ -204,7 +245,6 @@ function init() {
             })
         }
     })
-    
 }
 
 function createWebpage(employees) {
