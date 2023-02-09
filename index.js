@@ -4,6 +4,15 @@ const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
 const inquirer = require('inquirer');
 
+const employeeList = [];
+
+let startProgram = [
+    {
+        type: 'confirm',
+        message: "Do you have employee information to input?",
+        name: 'startProgram',
+    }
+]
 
 let employeeQuestions = [
     {
@@ -21,7 +30,7 @@ let employeeQuestions = [
     },
 
     {
-        type: 'number',
+        type: 'input',
         message: "What is the employee's ID number?",
         name: 'employeeId',
         validate: employeeId => {
@@ -109,6 +118,24 @@ let internQuestions = [
     }
 ]
 
+let additionalEmployee = [
+    {
+        type: 'confirm',
+        message: "Do you have another employee to input?",
+        name: 'additionalEmployee',
+        
+    }
+]
+
+inquirer.prompt(startProgram)
+.then(function(answers) {
+    if(answers.startProgram === true) {
+        init();
+    } else {
+        return;
+    }
+})
+
 function init() {
     inquirer.prompt(employeeQuestions)
     .then(function(answers) {
@@ -116,24 +143,64 @@ function init() {
             
             inquirer.prompt(managerQuestions)
             .then(function(managerAnswers) {
-                console.log(answers, managerAnswers);
+                const managerObj = new Manager(answers.employeeName, answers.employeeId, answers.employeeEmail, managerAnswers.managerOfficeNumber);
+                employeeList.push(managerObj);
+                inquirer.prompt(additionalEmployee)
+                .then(function(additionalAnswer) {
+                    if (additionalAnswer.additionalEmployee === true) {
+                        init();
+                    } else {
+                        console.log(employeeList);
+                        return;
+                    }
+                })
             })
         } else if(answers.employeeChoice === 'Engineer') {
 
             inquirer.prompt(engineerQuestions)
             .then(function(engineerAnswers) {
-                console.log(answers, engineerAnswers);
+                const engineerObj = new Engineer(answers.employeeName, answers.employeeId, answers.employeeEmail, engineerAnswers.githubUsername);
+                employeeList.push(engineerObj);
+                inquirer.prompt(additionalEmployee)
+                .then(function(additionalAnswer) {
+                    if (additionalAnswer.additionalEmployee === true) {
+                        init();
+                    } else {
+                        console.log(employeeList);
+                        return;
+                    }
+                })
             })
         } else if(answers.employeeChoice === 'Intern') {
 
             inquirer.prompt(internQuestions)
             .then(function(internAnswers) {
-                console.log(answers, internAnswers);
+                const internObj = new Intern(answers.employeeName, answers.employeeId, answers.employeeEmail, internAnswers.internSchool);
+                employeeList.push(internObj);
+                inquirer.prompt(additionalEmployee)
+                .then(function(additionalAnswer) {
+                    if (additionalAnswer.additionalEmployee === true) {
+                        init();
+                    } else {
+                        console.log(employeeList);
+                        return;
+                    }
+                })
             })
         } else {
-            console.log(answers)
+            const employeeObj = new Employee(answers.employeeName, answers.employeeId, answers.employeeEmail);
+            employeeList.push(employeeObj);
+            inquirer.prompt(additionalEmployee)
+            .then(function(additionalAnswer) {
+                if (additionalAnswer.additionalEmployee === true) {
+                    init();
+                } else {
+                    console.log(employeeList);
+                    return;
+                }
+            })
         }
     })
+    
 }
 
-init();
