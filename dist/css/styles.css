@@ -4,6 +4,7 @@
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
+    text-decoration: none;
 }
 
 header {
@@ -12,6 +13,74 @@ header {
     align-items: center;
     background-color: #E34957;
     color: white;
-    font-size: 40px;
-    height: 100px;
+    font-size: 30px;
+    height: 120px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.employee-card {
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+    min-width: 300px;
+    margin: 70px 20px 20px 20px;
+    background-color: #EFF1F5;
+    -webkit-box-shadow: 6px 6px 5px 0px rgba(128,128,128,1);
+    -moz-box-shadow: 6px 6px 5px 0px rgba(128,128,128,1);
+    box-shadow: 6px 6px 5px 0px rgba(128,128,128,1);
+}
+
+.employee-name {
+    background-color: #0776F4;
+    text-align: left;
+    color: white;
+}
+
+.employee-name p {
+    margin: 10px 10px;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.employee-name p i {
+    margin: 0 10px 0 0;
+}
+
+.employee-information {
+    padding: 30px 0;
+}
+
+.employee-id {
+    background-color: white;
+    margin: 20px 10px 5px 10px;
+}
+
+.employee-id p {
+    margin-left: 10px;
+    padding: 10px 0;
+}
+
+.employee-email {
+    background-color: white;
+    margin: 0px 10px 5px 10px;
+}
+
+.employee-email p {
+    margin-left: 10px;
+    padding: 10px 0;
+}
+
+.additional-info {
+    background-color: white;
+    margin: 0px 10px 5px 10px;
+}
+
+.additional-info p {
+    margin-left: 10px;
+    padding: 10px 0;
 }
